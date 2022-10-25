@@ -1,1 +1,1 @@
-This project was made by Andrei Radu for Databases course.
+Proiect pentru baze de date..
