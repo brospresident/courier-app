@@ -9,7 +9,7 @@ apiRouter.post('/api', (req, res, next) => {
     let method = obj[1];
 
     if (!object || !method) {
-        res.json({ id : req.body.id, error:{ message: "Not JSON-RPC"}, result: null });
+        res.json({id : req.body.id, error:{message: "Not JSON-RPC"}, result: null});
 		return;
     }
 
