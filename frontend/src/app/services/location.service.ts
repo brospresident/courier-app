@@ -1,21 +1,27 @@
 import { Injectable } from '@angular/core';
-
-import { Router } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LocationService {
+  constructor(private router: Router,
+              private activatedRoute: ActivatedRoute) { }
 
-  constructor(private router: Router) { }
-
-  // TODO: Functionalitatea din serviciul de angularjs $location just because it is better than angular approach
-  // ref: https://docs.angularjs.org/api/ng/service/$location#search
   search(param = '', value = '') {
-    if (!param && !value) {
-      
-    } else {
-
+    let query_params = this.router.getCurrentNavigation()?.extractedUrl.queryParams as any;
+    if (!query_params) {
+      query_params = {};
     }
+    if (!param || !value) {
+      return query_params;
+    }
+    let self = this;
+    query_params[param] = value;
+    this.router.navigate([], {
+      relativeTo: self.activatedRoute,
+      queryParams: query_params, 
+      queryParamsHandling: 'merge'
+    });
   }
 }

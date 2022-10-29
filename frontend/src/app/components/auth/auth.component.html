@@ -1,11 +1,54 @@
 <div class="container" *ngIf="page === 'login'">
     <div class="row">
-        <div class="col-md-4 col-md-offset-6 mt-5">
+        <div class="col-md-3 col-md-offset-6 mt-5">
             <h1>{{page.toUpperCase()}}</h1>
             <input [(ngModel)]="email" type="text" class="form-control" placeholder="Your email"/>
             <input [(ngModel)]="password" class="mt-3 form-control" type="password" placeholder="Your password"/>
-            <br>
-            <button (click)="login()" class="mt-3 btn btn-primary" ngbTooltip="Logs you in">LOGIN</button>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-md-2">
+            <button mat-raised-button color="accent" (click)="login()" ngbTooltip="Logs you in">LOGIN</button>
+        </div>
+        <div class="col-md-2 mt-3">
+            <a mat-stroked-button href="javascript:void()" (click)="switchPage('register')">Go to register</a>
+        </div>
+    </div>
+</div>
+
+<div class="container" *ngIf="page === 'register'">
+    <div class="row">
+        <div class="col-md-3 col-md-offset-6 mt-5">
+            <h1>{{page.toUpperCase()}}</h1>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-md-3">
+            <input [(ngModel)]="first_name" class="col-md-3 form-control" type="text" placeholder="First Name"/>
+        </div>
+        <div class="col-md-3">
+            <input [(ngModel)]="last_name" class="col-md-3 form-control" type="text" placeholder="Last Name"/>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-md-6">
+            <input [(ngModel)]="email" type="text" class="col-md-3 form-control" placeholder="Your email"/>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-md-3">
+            <input [(ngModel)]="password" class="col-md-3 form-control" type="password" placeholder="Type in a password"/>
+        </div>
+        <div class="col-md-3">
+            <input [(ngModel)]="confirmPassword" class="col-md-3 form-control" type="password" placeholder="Password confirmation"/>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-md-3">
+            <button mat-raised-button color="accent" (click)="register()" ngbTooltip="Registers your account">REGISTER</button>
+        </div>
+        <div class="col-md-3 mt-3">
+            <a mat-stroked-button href="javascript:void()" (click)="switchPage('login')">Go to login</a>
         </div>
     </div>
 </div>

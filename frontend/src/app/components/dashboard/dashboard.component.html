@@ -1,0 +1,50 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport
+      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+      [mode]="(isHandset$ | async) ? 'over' : 'side'"
+      [opened]="(isHandset$ | async) === false">
+    <mat-toolbar>Dashboard</mat-toolbar>
+    <hr>
+    <mat-nav-list>
+      <a mat-list-item href="javascript:void(0)" (click)="changeView('add_package')">
+        <mat-icon>
+          <app-icons style="font-size: 15px;" icon="add-package"></app-icons>
+        </mat-icon>
+        <p style="margin-top: 20px; margin-left: 10px;">Add Package</p>
+      </a>
+      <a mat-list-item href="javascript:void(0)" (click)="changeView('package_list')">
+        <mat-icon>
+          <app-icons style="font-size: 15px;" icon="package-list"></app-icons>
+        </mat-icon>
+        <p style="margin-top: 20px; margin-left: 10px;">Packages List</p>
+      </a>
+      <a mat-list-item href="javascript:void(0)" (click)="changeView('locations')">
+        <mat-icon>
+          <app-icons style="font-size: 15px;" icon="locations"></app-icons>
+        </mat-icon>
+        <p style="margin-top: 20px; margin-left: 10px;">Deposits List</p>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="secondary">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <div ngbDropdown>
+        <a href="javascript:void(0)" id="gfg" style="font-size: 15px;text-decoration: none; margin-left:79vw; color: white;"
+                ngbDropdownToggle>{{user?.email}}</a>
+        <div ngbDropdownMenu="gfg">
+          <a href="javascript:void(0)" (click)="changeView('profile')" ngbDropdownItem>My Profile</a>
+          <a href="javascript:void(0)" (click)="logout()" ngbDropdownItem>Log Out</a>
+        </div>
+      </div>
+    </mat-toolbar>
+    <app-profile *ngIf="view == 'profile'" [user]="user"></app-profile>
+  </mat-sidenav-content>
+</mat-sidenav-container>

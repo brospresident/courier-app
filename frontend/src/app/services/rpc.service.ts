@@ -20,7 +20,8 @@ export class RpcService {
 
     axios({
       url: this.url,
-      data: body
+      data: body,
+      method: 'post'
     })
     .then(response => {
       if (response) {

@@ -12,7 +12,7 @@ export class AppComponent {
                 private router: Router) {}
 
     ngOnInit() {
-        let authCookie = this.cookieService.get('auth');
+        let authCookie = this.cookieService.get('courier-auth');
         if (!authCookie) {
             this.router.navigate(['/auth']);
         }

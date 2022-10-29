@@ -3,7 +3,7 @@ const handlers = require('./handlers/handlers');
 
 const apiRouter = express.Router();
 
-apiRouter.post('/api', (req, res, next) => {
+apiRouter.post('/', (req, res, next) => {
     let obj = req.body.method.split('.');
     let object = obj[0];
     let method = obj[1];

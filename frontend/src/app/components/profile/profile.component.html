@@ -1,0 +1,47 @@
+<div class="container mt-5">
+    <div class="row mb-3">
+        <div class="col-md-2">
+            <label for="email">Email</label>
+            <input class="form-control form-control-sm" id="email" type="text" [(ngModel)]="user_data.email" disabled>
+        </div>
+        <div class="col-md-2">
+            <label for="client_code">Client Code</label>
+            <input class="form-control form-control-sm" id="client_code" type="text" [(ngModel)]="user_data.client_code" disabled>
+        </div>
+        <div class="col-md-2">
+            <label for="phone_no">Phone Number</label>
+            <input class="form-control form-control-sm" id="phone_no" type="text" [(ngModel)]="user_data.phone_number" placeholder="Your contact number">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-md-3">
+            <label for="city">City</label>
+            <input class="form-control form-control-sm" id="city" type="text" [(ngModel)]="user_data.city" placeholder="Your city">
+        </div>
+        <div class="col-md-3">
+            <label for="zip">Zip Code</label>
+            <input class="form-control form-control-sm" id="zip" type="text" [(ngModel)]="user_data.zip_code" placeholder="Your zip code">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-md-5">
+            <label for="street">Street Name</label>
+            <input class="form-control form-control-sm" id="street" type="text" [(ngModel)]="user_data.street" placeholder="Your street">
+        </div>
+        <div class="col-md-1">
+            <label for="street_number">Number</label>
+            <input class="form-control form-control-sm" id="street_number" type="text" [(ngModel)]="user_data.street_number" placeholder="Street no.">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label for="county">County</label>
+            <input class="form-control form-control-sm" id="county" type="text" [(ngModel)]="user_data.county" placeholder="County">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-md-3">
+            <button class="btn btn-warning" (click)="saveUserInfo()">Save info</button>
+        </div>
+    </div>
+</div>
