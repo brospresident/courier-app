@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { CookieService } from 'ngx-cookie-service';
 import { LocationService } from 'src/app/services/location.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -21,9 +22,14 @@ export class DashboardComponent {
 
   constructor(private breakpointObserver: BreakpointObserver,
               private cookieService: CookieService,
-              private location: LocationService) {}
+              private location: LocationService,
+              private router: Router) {}
 
   ngOnInit() {
+    let authCookie = this.cookieService.get('courier-auth');
+    if (!authCookie) {
+      this.router.navigate(['/auth']);
+    }
     let user_obj = window.localStorage.getItem('courier-user') as any;
     user_obj = JSON.parse(user_obj);
     this.user = user_obj;
@@ -34,7 +40,7 @@ export class DashboardComponent {
   logout() {
     window.localStorage.clear();
     this.cookieService.deleteAll();
-    window.location.reload();
+    this.router.navigate(['/auth']);
   }
 
   changeView(view: any) {

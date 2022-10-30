@@ -23,6 +23,7 @@ import { IconsComponent } from './components/icons/icons.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { AddPackageComponent } from './components/add-package/add-package.component';
 import { DepositMapComponent } from './components/deposit-map/deposit-map.component';
+import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { DepositMapComponent } from './components/deposit-map/deposit-map.compon
     IconsComponent,
     ProfileComponent,
     AddPackageComponent,
-    DepositMapComponent
+    DepositMapComponent,
+    AdminDashboardComponent
   ],
   imports: [
     NgbModule,

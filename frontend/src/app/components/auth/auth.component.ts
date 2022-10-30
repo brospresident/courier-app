@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { RpcService } from 'src/app/services/rpc.service';
 import { CookieService } from 'ngx-cookie-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-auth',
@@ -10,15 +11,18 @@ import { CookieService } from 'ngx-cookie-service';
 export class AuthComponent implements OnInit {
   email: any | null = null;
   password: any | null = null;
-  page: any | null = null;
+  @Input() page: any | null = null;
   confirmPassword: any | null = null;
   first_name: any | null = null;
   last_name: any | null = null;
   constructor(private rpcService: RpcService,
-              private cookieService: CookieService) { }
+              private cookieService: CookieService,
+              private router: Router) { }
 
   ngOnInit(): void {
-    this.page = 'login';
+    if (!this.page) {
+      this.page = 'login'
+    }
   }
 
   switchPage(page: any) {
@@ -34,6 +38,10 @@ export class AuthComponent implements OnInit {
       query: 'select_client'
     }
 
+    if (this.page == 'employee') {
+      params.query = 'select_employee';
+    }
+
     let self = this;
     this.rpcService.ask('auth.login', params, (err: any, res: any) => {
       if (err) {
@@ -43,7 +51,11 @@ export class AuthComponent implements OnInit {
       res = res.result;
       self.cookieService.set('courier-auth', res.encoded);
       window.localStorage.setItem('courier-user', JSON.stringify(res));
-      window.location.href = 'http://localhost:4200/dashboard';
+      this.router.navigate(['/dashboard'], {
+        queryParams: {
+          'view': 'profile'
+        }
+      });
     });
   }
 

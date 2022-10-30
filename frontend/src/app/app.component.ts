@@ -15,9 +15,6 @@ export class AppComponent {
 
     ngOnInit() {
         let authCookie = this.cookieService.get('courier-auth');
-        if (!authCookie) {
-            this.router.navigate(['/auth']);
-        }
 
         if (authCookie) {
             let user = this.accountService.getUser();
