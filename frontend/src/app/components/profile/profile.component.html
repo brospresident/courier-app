@@ -39,9 +39,15 @@
             <input class="form-control form-control-sm" id="county" type="text" [(ngModel)]="user_data.county" placeholder="County">
         </div>
     </div>
+    <div class="row mb-2">
+        <div class="col-md-3">
+            <div *ngIf="callback_info.err" style="color: red">{{callback_info.err}}</div>
+            <div *ngIf="callback_info.result" style="color: green">{{callback_info.result}}</div>
+        </div>
+    </div>
     <div class="row mb-3">
         <div class="col-md-3">
-            <button class="btn btn-warning" (click)="saveUserInfo()">Save info</button>
+            <button class="btn btn-warning" (click)="saveClientInfo()">Save info</button>
         </div>
     </div>
 </div>

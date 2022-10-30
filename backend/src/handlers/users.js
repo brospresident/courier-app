@@ -1,5 +1,5 @@
-const mysql = require('../mysql');
-const queries = require('../queries');
+const mysql = require('../database/mysql');
+const queries = require('../database/queries');
 
 let users = {
     get_user: function(req, res, next) {
@@ -13,7 +13,21 @@ let users = {
             }
             result = result[0];
             res.json({id: 1, error: null, result: result});
-        })
+        });
+    },
+
+    update_client: function(req, res, next) {
+        let {email, phone_number, city, zip_code, street, street_number, county, query} = req.body.params;
+
+        mysql.query(queries[query](email, phone_number, city, zip_code, street, street_number, county), (err, result) => {
+            if (err) {
+                console.log(err);
+                res.json({id: 1, error: 'There was a problem saving your data!', result: null});
+                return;
+            }
+            let message = 'Data saved successfully!';
+            res.json({id: 1, error: null, result: {message: message}});
+        });
     }
 }
 

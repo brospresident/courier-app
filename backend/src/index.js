@@ -1,5 +1,5 @@
 const express = require('express');
-const mysql = require('./mysql');
+const mysql = require('./database/mysql');
 const apiRouter = require('./api');
 const cors = require('cors');
 

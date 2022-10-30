@@ -21,6 +21,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { IconsComponent } from './components/icons/icons.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { AddPackageComponent } from './components/add-package/add-package.component';
+import { DepositMapComponent } from './components/deposit-map/deposit-map.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,9 @@ import { ProfileComponent } from './components/profile/profile.component';
     AuthComponent,
     DashboardComponent,
     IconsComponent,
-    ProfileComponent
+    ProfileComponent,
+    AddPackageComponent,
+    DepositMapComponent
   ],
   imports: [
     NgbModule,

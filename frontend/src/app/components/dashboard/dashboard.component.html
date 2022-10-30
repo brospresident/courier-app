@@ -46,5 +46,6 @@
       </div>
     </mat-toolbar>
     <app-profile *ngIf="view == 'profile'" [user]="user"></app-profile>
+    <app-deposit-map *ngIf="view == 'locations'" [user]="user"></app-deposit-map>
   </mat-sidenav-content>
 </mat-sidenav-container>

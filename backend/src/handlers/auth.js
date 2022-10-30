@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
-const mysql = require('../mysql');
-const queries = require('../queries');
+const mysql = require('../database/mysql');
+const queries = require('../database/queries');
 const crypto = require("crypto");
 const jwt = require('jsonwebtoken');
 
@@ -69,7 +69,10 @@ let auth = {
                 if (err) {
                     res.json({id: 1, error: 'error pass user 1', result: null});
                 } else {
-                    if (!same) res.json({id: 1, error: 'error pass user 2', result: null});
+                    if (!same) {
+                        res.json({id: 1, error: 'error pass user 2', result: null});
+                        return;
+                    }
                     let r = {
                         email: result.email
                     };
@@ -83,7 +86,7 @@ let auth = {
                         res.json({id: 1, error: null, result: r});
                     });
                 }
-            })
+            });
         });
     }
 }

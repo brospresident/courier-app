@@ -27,8 +27,8 @@ export class DashboardComponent {
     let user_obj = window.localStorage.getItem('courier-user') as any;
     user_obj = JSON.parse(user_obj);
     this.user = user_obj;
-    // this.view = this.location.search();
-    // console.log(this.view);
+    this.location.search();
+    // this.view = this.location.search()['view'];
   }
 
   logout() {
