@@ -25,7 +25,7 @@ export class AdminDashboardComponent implements OnInit {
       this.view = 'login';
       this.locationService.search('view', this.view);
     } else {
-      this.view = 'overview';
+      this.view = 'dashboard';
       this.locationService.search('view', this.view);
     }
   }

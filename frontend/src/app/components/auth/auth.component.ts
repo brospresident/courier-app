@@ -51,7 +51,7 @@ export class AuthComponent implements OnInit {
       res = res.result;
       self.cookieService.set('courier-auth', res.encoded);
       window.localStorage.setItem('courier-user', JSON.stringify(res));
-      this.router.navigate(['/dashboard'], {
+      self.router.navigate(['/dashboard'], {
         queryParams: {
           'view': 'profile'
         }

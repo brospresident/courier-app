@@ -55,4 +55,8 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  handleViewChange(view: any) {
+
+  }
+
 }

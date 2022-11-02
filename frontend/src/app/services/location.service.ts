@@ -10,7 +10,6 @@ export class LocationService {
 
   search(param = '', value = '') {
     let query_params = this.getQueryParams();
-    // let query_params = this.router.getCurrentNavigation()?.extractedUrl.queryParams as any;
     if (!query_params) {
       query_params = {};
     }

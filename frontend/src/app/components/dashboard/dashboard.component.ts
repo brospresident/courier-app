@@ -1,4 +1,4 @@
-import { Component, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Output, SimpleChanges } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
@@ -14,6 +14,8 @@ import { Router } from '@angular/router';
 export class DashboardComponent {
   user: any;
   view: any;
+  @Output() viewChanged: EventEmitter<String>;
+
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
       map(result => result.matches),
@@ -23,7 +25,9 @@ export class DashboardComponent {
   constructor(private breakpointObserver: BreakpointObserver,
               private cookieService: CookieService,
               private location: LocationService,
-              private router: Router) {}
+              private router: Router) {
+                this.viewChanged = new EventEmitter<String>();
+              }
 
   ngOnInit() {
     let authCookie = this.cookieService.get('courier-auth');
@@ -33,8 +37,10 @@ export class DashboardComponent {
     let user_obj = window.localStorage.getItem('courier-user') as any;
     user_obj = JSON.parse(user_obj);
     this.user = user_obj;
-    this.location.search();
-    // this.view = this.location.search()['view'];
+    let view = this.location.search()['view'];
+    if (view) {
+      this.view = view;
+    }
   }
 
   logout() {
@@ -46,6 +52,7 @@ export class DashboardComponent {
   changeView(view: any) {
     this.view = view;
     this.location.search('view', view);
+    this.viewChanged.emit(view);
   }
 
   ngOnChanges(changes: SimpleChanges) {
