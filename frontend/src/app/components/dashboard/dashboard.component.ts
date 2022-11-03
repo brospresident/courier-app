@@ -14,7 +14,6 @@ import { Router } from '@angular/router';
 export class DashboardComponent {
   user: any;
   view: any;
-  @Output() viewChanged: EventEmitter<String>;
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -26,7 +25,6 @@ export class DashboardComponent {
               private cookieService: CookieService,
               private location: LocationService,
               private router: Router) {
-                this.viewChanged = new EventEmitter<String>();
               }
 
   ngOnInit() {
@@ -52,13 +50,12 @@ export class DashboardComponent {
   changeView(view: any) {
     this.view = view;
     this.location.search('view', view);
-    this.viewChanged.emit(view);
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['view'].currentValue != changes['view'].previousValue) {
       this.ngOnInit();
     }
-  } 
+  }
 
 }

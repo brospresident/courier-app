@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { AccountService } from 'src/app/services/account.service';
 import { LocationService } from 'src/app/services/location.service';
@@ -30,4 +30,13 @@ export class AdminDashboardComponent implements OnInit {
     }
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['view'].previousValue != changes['view'].currentValue) {
+      this.ngOnInit();
+    }
+  } 
+
+  handleLoginFinish(e: any) {
+    if (e) this.ngOnInit();
+  }
 }

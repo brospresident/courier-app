@@ -7,6 +7,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthComponent } from './components/auth/auth.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
@@ -24,6 +25,8 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { AddPackageComponent } from './components/add-package/add-package.component';
 import { DepositMapComponent } from './components/deposit-map/deposit-map.component';
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
+import { EmployeesListComponent } from './components/employees-list/employees-list.component';
+import { LoadingComponent } from './components/loading/loading.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +37,9 @@ import { AdminDashboardComponent } from './components/admin-dashboard/admin-dash
     ProfileComponent,
     AddPackageComponent,
     DepositMapComponent,
-    AdminDashboardComponent
+    AdminDashboardComponent,
+    EmployeesListComponent,
+    LoadingComponent
   ],
   imports: [
     NgbModule,
@@ -51,7 +56,8 @@ import { AdminDashboardComponent } from './components/admin-dashboard/admin-dash
     LayoutModule,
     MatToolbarModule,
     MatSidenavModule,
-    MatListModule
+    MatListModule,
+    MatProgressSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

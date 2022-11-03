@@ -28,6 +28,17 @@ let users = {
             let message = 'Data saved successfully!';
             res.json({id: 1, error: null, result: {message: message}});
         });
+    },
+
+    get_all_employees: function(req, res, next) {
+        let query = req.body.params.query;
+        mysql.query(queries[query](), (err, result) => {
+            if (err) {
+                res.json({id: 1, error: 'error while getting employees', result: null});
+                return;
+            }
+            res.json({id: 1, error: null, result: result});
+        });
     }
 }
 

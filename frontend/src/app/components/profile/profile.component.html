@@ -1,12 +1,16 @@
-<div class="container mt-5">
+<div class="container mt-5" *ngIf="!loading">
     <div class="row mb-3">
         <div class="col-md-2">
             <label for="email">Email</label>
             <input class="form-control form-control-sm" id="email" type="text" [(ngModel)]="user_data.email" disabled>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-2" *ngIf="user.role == 'client'">
             <label for="client_code">Client Code</label>
             <input class="form-control form-control-sm" id="client_code" type="text" [(ngModel)]="user_data.client_code" disabled>
+        </div>
+        <div class="col-md-2" *ngIf="user.role == 'admin' || user.role == 'driver'">
+            <label for="client_code">Wage</label>
+            <input class="form-control form-control-sm" id="client_code" type="text" [(ngModel)]="user_data.wage" disabled>
         </div>
         <div class="col-md-2">
             <label for="phone_no">Phone Number</label>
@@ -47,7 +51,11 @@
     </div>
     <div class="row mb-3">
         <div class="col-md-3">
-            <button class="btn btn-warning" (click)="saveClientInfo()">Save info</button>
+            <button class="btn btn-warning" (click)="saveClientInfo()" *ngIf="user.role == 'client'">Save info</button>
         </div>
     </div>
+</div>
+
+<div *ngIf="loading">
+    <app-loading></app-loading>
 </div>

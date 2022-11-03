@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
 import { RpcService } from 'src/app/services/rpc.service';
 
 @Component({
@@ -10,19 +10,35 @@ export class ProfileComponent implements OnInit {
   @Input() user: any;
   user_data: any = {} as any;
   callback_info = {err: null, result: null};
-  constructor(private rpcService: RpcService) { }
+  loading: any = true;
+  constructor(private rpcService: RpcService) {
+  }
 
   ngOnInit(): void {
+    this.loading = true;
     let params = {
       email: this.user.email,
       query: 'select_client'
     };
 
+    if (this.user.role == 'admin') {
+      params.query = 'select_employee';
+    }
+
     let self = this;
     this.rpcService.ask('users.get_user', params, (err: any, res: any) => {
       res = res.result;
       self.user_data = res;
+      self.loading = false;
     });
+  }
+
+
+
+  makeUpdateEndpoint() {
+    if (this.user.role == 'client') return 'users.update_client';
+    if (this.user.role == 'admin' || this.user.role == 'driver') return 'users.update_employee';
+    return '';
   }
 
   saveClientInfo() {
@@ -40,7 +56,7 @@ export class ProfileComponent implements OnInit {
     console.log(params);
 
     let self = this;
-    this.rpcService.ask('users.update_client', params, (err: any, res: any) => {
+    this.rpcService.ask(self.makeUpdateEndpoint(), params, (err: any, res: any) => {
       if (err || res.error) {
         self.callback_info.err = err || res.error;
       }
@@ -54,9 +70,4 @@ export class ProfileComponent implements OnInit {
       }, 3000);
     });
   }
-
-  handleViewChange(view: any) {
-
-  }
-
 }

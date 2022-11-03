@@ -3,7 +3,7 @@
       [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
       [mode]="(isHandset$ | async) ? 'over' : 'side'"
       [opened]="(isHandset$ | async) === false">
-    <mat-toolbar>{{user.role == 'client' ? 'Dashboard' : 'Admin Dashboard'}}</mat-toolbar>
+    <mat-toolbar>{{user?.role == 'client' ? 'Dashboard' : 'Admin Dashboard'}}</mat-toolbar>
     <hr>
     <mat-nav-list>
       <div *ngIf="user.role == 'client'">
@@ -24,6 +24,14 @@
             <app-icons style="font-size: 15px;" icon="locations"></app-icons>
           </mat-icon>
           <p style="margin-top: 20px; margin-left: 10px;">Deposits List</p>
+        </a>
+      </div>
+      <div *ngIf="user.role == 'admin'">
+        <a mat-list-item (click)="changeView('employees')">
+          <mat-icon>
+            <app-icons style="font-size: 15px;" icon="employee"></app-icons>
+          </mat-icon>
+          <p style="margin-top: 20px; margin-left: 10px;">Employees</p>
         </a>
       </div>
     </mat-nav-list>
@@ -49,5 +57,6 @@
     </mat-toolbar>
     <app-profile *ngIf="view == 'profile'" [user]="user"></app-profile>
     <app-deposit-map *ngIf="view == 'locations'" [user]="user"></app-deposit-map>
+    <app-employees-list *ngIf="view == 'employees' && user.role == 'admin'" [user]="user"></app-employees-list>
   </mat-sidenav-content>
 </mat-sidenav-container>

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { RpcService } from 'src/app/services/rpc.service';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
@@ -15,6 +15,7 @@ export class AuthComponent implements OnInit {
   confirmPassword: any | null = null;
   first_name: any | null = null;
   last_name: any | null = null;
+  @Output() onLogin = new EventEmitter<string>();
   constructor(private rpcService: RpcService,
               private cookieService: CookieService,
               private router: Router) { }
@@ -51,11 +52,20 @@ export class AuthComponent implements OnInit {
       res = res.result;
       self.cookieService.set('courier-auth', res.encoded);
       window.localStorage.setItem('courier-user', JSON.stringify(res));
-      self.router.navigate(['/dashboard'], {
-        queryParams: {
-          'view': 'profile'
-        }
-      });
+      if (res.role == 'admin' || res.role == 'driver') {
+        self.onLogin.emit('done');
+        self.router.navigate(['/admin'], {
+          queryParams: {
+            'view': 'profile'
+          }
+        });
+      } else {
+        self.router.navigate(['/dashboard'], {
+          queryParams: {
+            'view': 'profile'
+          }
+        });
+      }
     });
   }
 

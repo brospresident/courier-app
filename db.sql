@@ -85,7 +85,7 @@ ALTER TABLE `PACKAGE_STATUS` ADD CONSTRAINT `PACKAGE_STATUS_fk0` FOREIGN KEY (`p
 
 ALTER TABLE `PACKAGE_STATUS` ADD CONSTRAINT `PACKAGE_STATUS_fk1` FOREIGN KEY (`status_id`) REFERENCES `STATUS`(`id_status`);
 
-INSERT INTO EMPLOYEES (first_name, last_name, email, password, phone_number, city, county, zip_code, street, street_number, wage, role) VALUES('Andrei', 'Radu', 'andrei@curier.io', '$2b$10$SlGGGbSy9yuMT5FrPaPIAOuPZKZHic37g7iybl/R1zmD7Bo8hMvRy', '0734291655', 'Bucharest', 'Bucharest', '354201', 'Iuliu Maniu', 20, 10000, 'admin');
+INSERT INTO employees (first_name, last_name, email, password, phone_number, city, county, zip_code, street, street_number, wage, role) VALUES('Andrei', 'Radu', 'andrei@curier.io', '$2b$10$SlGGGbSy9yuMT5FrPaPIAOuPZKZHic37g7iybl/R1zmD7Bo8hMvRy', '0734291655', 'Bucharest', 'Bucharest', '354201', 'Iuliu Maniu', 20, 10000, 'admin');
 
 
 

@@ -9,5 +9,13 @@ module.exports = {
 
     'update_client_personal': function(email, phone_number, city, zip_code, street_name, street_number, county) {
         return `UPDATE clients SET phone_number = '${phone_number}', city = '${city}', zip_code = '${zip_code}', street = '${street_name}', street_number = ${street_number}, county = '${county}' WHERE email = '${email}';`
+    },
+    
+    'select_employee': function(email) {
+        return `SELECT * FROM employees WHERE email='${email}' LIMIT 1;`
+    },
+
+    'get_all_employees': function() {
+        return `SELECT * FROM employees;`;
     }
 }

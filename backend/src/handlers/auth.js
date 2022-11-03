@@ -64,6 +64,10 @@ let auth = {
         let query = req.body.params.query;
 
         mysql.query(queries[query](email), (err, result) => {
+            if (result.length == 0) {
+                res.json({id: 1, error: 'No such user', result: null});
+                return;
+            }
             result = result[0];
             comparePassword(password, result.password, (err, same) => {
                 if (err) {
