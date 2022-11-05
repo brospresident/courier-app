@@ -1,5 +1,14 @@
 const mysql = require('../database/mysql');
 const queries = require('../database/queries');
+const bcrypt = require('bcrypt');
+const utils = require('../utils');
+
+function encryptPassword(password, callback) {
+    bcrypt.hash(password, 10, (err, encryptedPassword) => {
+        if (err) callback(err, null);
+        else callback(null, encryptedPassword);
+    });
+}
 
 let users = {
     get_user: function(req, res, next) {
@@ -38,6 +47,42 @@ let users = {
                 return;
             }
             res.json({id: 1, error: null, result: result});
+        });
+    },
+
+    add_employee: function(req, res, next) {
+        let {first_name, last_name, email, phone_number, city, county, zip_code, 
+            password, street, wage, role, street_number, query, ssn} = req.body.params;
+        // console.log(query);
+        encryptPassword(password, (err, encryptedPassword) => {
+            if (err) {
+                res.json({id: 1, error: 'problem encrypting', result: null});
+            }
+            mysql.query(queries[query](first_name, last_name, email, phone_number, city, county, zip_code, encryptedPassword, street, wage, role, street_number, ssn),
+                (err, result) => {
+                   if (err) {
+                    console.log(err);
+                    res.json({id: 1, error: 'There was a problem adding a new employee', result: null});
+                    return;
+                   } 
+                   let message = 'Employee added!';
+                   res.json({id: 1, error: null, result: {message: message}});
+                });
+        });
+    },
+
+    update_employee: function(req, res, next) {
+        let {first_name, last_name, email, phone_number, city, county, zip_code, 
+            street, wage, role, street_number, query, ssn} = req.body.params;
+
+        mysql.query(queries[query](first_name, last_name, email, phone_number, city, county, zip_code, street, wage, role, street_number, ssn), (err, result) => {
+            if (err) {
+                console.log(err);
+                res.json({id: 1, error: 'problem updating', result: null});
+                return;
+            }
+            let message = 'Updated!';
+            res.json({id: 1, error: null, result: {message: message}});
         });
     }
 }
