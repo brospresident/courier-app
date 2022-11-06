@@ -1,5 +1,65 @@
 <div class="map-container">
     <div class="map-frame">
-        <div id="map"></div>
+        <div id="map" (click)="open(content)"></div>
     </div>
+
+    <ng-template #content let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">Add New Office</h4>
+            <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="modal-body" style="height: 30vh; overflow-y: scroll;">
+            <div class="mb-3">
+                <label for="x_pos">X Position</label>
+                <div class="input-group">
+                    <input
+                        id="x_pos"
+                        class="form-control"
+                        [(ngModel)]="x_pos"
+                        disabled
+                    />
+                </div>
+
+                <label for="y_pos">Y Position</label>
+                <div class="input-group">
+                    <input
+                        id="y_pos"
+                        class="form-control"
+                        [(ngModel)]="y_pos"
+                        disabled
+                    />
+                </div>
+
+                <label for="manageremail">Manager Email(get it from employees tab)</label>
+                <div class="input-group">
+                    <input
+                        id="manageremail"
+                        class="form-control"
+                        [(ngModel)]="manager_email"
+                    />
+                </div>
+
+                <label for="scheduleStart">Schedule Start</label>
+                <div class="input-group">
+                    <input
+                        id="scheduleStart"
+                        class="form-control"
+                        [(ngModel)]="schedule_start"
+                    />
+                </div>
+
+                <label for="scheduleEnd">Schedule End</label>
+                <div class="input-group">
+                    <input
+                        id="scheduleEnd"
+                        class="form-control"
+                        [(ngModel)]="schedule_end"
+                    />
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-dark" (click)="saveDeposit()">Save</button>
+        </div>
+    </ng-template>
 </div>

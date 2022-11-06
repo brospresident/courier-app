@@ -25,5 +25,13 @@ module.exports = {
     
     'update_employee': function(first_name, last_name, email, phone_number, city, county, zip_code, street, wage, role, street_number, ssn) {
         return `UPDATE employees SET first_name='${first_name}', last_name='${last_name}', email='${email}', phone_number='${phone_number}', city='${city}', county='${county}', zip_code='${zip_code}', street='${street}', wage='${wage}', role='${role}', street_number='${street_number}', ssn='${ssn}' WHERE email='${email}';`
+    },
+
+    'get_all_deposits': function() {
+        return 'SELECT * FROM deposits INNER JOIN employees ON deposits.manager_id = employees.id_employee;';
+    },
+
+    'insert_deposit': function(x_pos, y_pos, email, schedule_start, schedule_end) {
+        return `INSERT INTO deposits (x_pos, y_pos, manager_id, schedule_start, schedule_end) VALUES('${x_pos}', '${y_pos}', (SELECT id_employee FROM employees WHERE email='${email}'),'${schedule_start}','${schedule_end}');`;
     }
 }

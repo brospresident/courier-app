@@ -8,3 +8,4 @@
 8) interfata de employees(done)
 9) din interfata de employees sa poti edita fiecare chestie despre angajat(done)
 10) din interfata de employees sa poti adauga un angajat nou(done)
+11) din interfata de employees, adminii ar trebui sa poata adauga un nou deposit

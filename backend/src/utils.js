@@ -19,5 +19,12 @@ module.exports = {
             .then(function () {
                 cbfin && cbfin();
             });  
+    },
+    
+    encryptPassword: function(password, callback) {
+        bcrypt.hash(password, 10, (err, encryptedPassword) => {
+            if (err) callback(err, null);
+            else callback(null, encryptedPassword);
+        });
     }
 }

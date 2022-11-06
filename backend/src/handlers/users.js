@@ -1,14 +1,6 @@
 const mysql = require('../database/mysql');
 const queries = require('../database/queries');
-const bcrypt = require('bcrypt');
 const utils = require('../utils');
-
-function encryptPassword(password, callback) {
-    bcrypt.hash(password, 10, (err, encryptedPassword) => {
-        if (err) callback(err, null);
-        else callback(null, encryptedPassword);
-    });
-}
 
 let users = {
     get_user: function(req, res, next) {
@@ -54,7 +46,7 @@ let users = {
         let {first_name, last_name, email, phone_number, city, county, zip_code, 
             password, street, wage, role, street_number, query, ssn} = req.body.params;
         // console.log(query);
-        encryptPassword(password, (err, encryptedPassword) => {
+        utils.encryptPassword(password, (err, encryptedPassword) => {
             if (err) {
                 res.json({id: 1, error: 'problem encrypting', result: null});
             }

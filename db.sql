@@ -31,7 +31,7 @@ CREATE TABLE `EMPLOYEES` (
 	PRIMARY KEY (`id_employee`)
 );
 
-CREATE TABLE `DEPOSITS` (
+CREATE TABLE `deposits` (
 	`id_deposit` int NOT NULL AUTO_INCREMENT,
 	`x_pos` FLOAT NOT NULL,
 	`y_pos` FLOAT NOT NULL,
@@ -73,7 +73,7 @@ CREATE TABLE `PACKAGE_STATUS` (
 	PRIMARY KEY (`id_pack_status`)
 );
 
-ALTER TABLE `OFFICES` ADD CONSTRAINT `OFFICES_fk0` FOREIGN KEY (`manager_id`) REFERENCES `EMPLOYEES`(`id_employee`);
+ALTER TABLE `deposits` ADD CONSTRAINT `deposits_fk0` FOREIGN KEY (`manager_id`) REFERENCES `employees`(`id_employee`);
 
 ALTER TABLE `PACKAGES` ADD CONSTRAINT `PACKAGES_fk0` FOREIGN KEY (`sender_id`) REFERENCES `CLIENTS`(`id_client`);
 

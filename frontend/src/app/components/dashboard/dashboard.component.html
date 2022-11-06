@@ -23,7 +23,7 @@
           <mat-icon>
             <app-icons style="font-size: 15px;" icon="locations"></app-icons>
           </mat-icon>
-          <p style="margin-top: 20px; margin-left: 10px;">Deposits List</p>
+          <p style="margin-top: 20px; margin-left: 10px;">Deposits Map</p>
         </a>
       </div>
       <div *ngIf="user.role == 'admin'">
@@ -32,6 +32,12 @@
             <app-icons style="font-size: 15px;" icon="employee"></app-icons>
           </mat-icon>
           <p style="margin-top: 20px; margin-left: 10px;">Employees</p>
+        </a>
+        <a mat-list-item (click)="changeView('locations')">
+          <mat-icon>
+            <app-icons style="font-size: 15px;" icon="locations"></app-icons>
+          </mat-icon>
+          <p style="margin-top: 20px; margin-left: 10px;">Deposits Map</p>
         </a>
       </div>
     </mat-nav-list>
