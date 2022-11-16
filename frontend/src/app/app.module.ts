@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { AuthComponent } from './components/auth/auth.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { GoogleMapsModule } from '@angular/google-maps'
 
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
@@ -57,7 +58,8 @@ import { LoadingComponent } from './components/loading/loading.component';
     MatToolbarModule,
     MatSidenavModule,
     MatListModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    GoogleMapsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

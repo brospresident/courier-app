@@ -1,4 +1,5 @@
 const axios = require('axios');
+const bcrypt = require('bcrypt');
 
 const __API_ADDR = 'http://localhost:6001/api';
 

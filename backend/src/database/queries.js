@@ -28,7 +28,7 @@ module.exports = {
     },
 
     'get_all_deposits': function() {
-        return 'SELECT * FROM deposits INNER JOIN employees ON deposits.manager_id = employees.id_employee;';
+        return 'SELECT first_name, last_name, schedule_start, schedule_end, x_pos, y_pos FROM deposits INNER JOIN employees ON deposits.manager_id = employees.id_employee;';
     },
 
     'insert_deposit': function(x_pos, y_pos, email, schedule_start, schedule_end) {

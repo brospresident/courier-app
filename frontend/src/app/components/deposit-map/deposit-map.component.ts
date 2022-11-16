@@ -2,7 +2,23 @@ import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as L from 'leaflet';
 import { AccountService } from 'src/app/services/account.service';
+import { MarkerService } from 'src/app/services/marker.service';
 import { RpcService } from 'src/app/services/rpc.service';
+
+const iconRetinaUrl = 'assets/marker-icon-2x.png';
+const iconUrl = 'assets/marker-icon.png';
+const shadowUrl = 'assets/marker-shadow.png';
+const iconDefault = L.icon({
+  iconRetinaUrl,
+  iconUrl,
+  shadowUrl,
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  tooltipAnchor: [16, -28],
+  shadowSize: [41, 41]
+});
+L.Marker.prototype.options.icon = iconDefault;
 
 @Component({
   selector: 'app-deposit-map',
@@ -17,9 +33,11 @@ export class DepositMapComponent implements AfterViewInit, OnInit {
   manager_email: any;
   schedule_start: any;
   schedule_end: any;
+  deposits_data: any;
   constructor(private accountService: AccountService,
               private modalService: NgbModal,
-              private rpcService: RpcService) {
+              private rpcService: RpcService,
+              private markerService: MarkerService) {
   }
 
   ngOnInit() {
@@ -33,13 +51,6 @@ export class DepositMapComponent implements AfterViewInit, OnInit {
       if (self.user.role != 'admin') return;
       self.x_pos = event.latlng.lng;
       self.y_pos = event.latlng.lat;
-    });
-    this.getDepositData((err: any, res: any) => {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log(res);
-      }
     });
   }
 
@@ -55,6 +66,7 @@ export class DepositMapComponent implements AfterViewInit, OnInit {
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     });
     tiles.addTo(this.map);
+    this.getDepositData();
   }
 
   open(content: any) {
@@ -81,15 +93,30 @@ export class DepositMapComponent implements AfterViewInit, OnInit {
     });
   }
 
-  getDepositData(cb: any) {
+  getDepositData() {
+    let self = this;
     this.rpcService.ask('deposits.get_all_deposits', {query: 'get_all_deposits'}, (err: any, res: any) => {
-      if (err || res.error) {
-        cb && cb(err || res.error, null);
+      if (err || res?.error) {
+        console.log(res?.err);
+        console.log(err);
+        self.deposits_data = [];
         return;
       } else {
-        console.log(res);
-        cb && cb(null, res);
+        self.deposits_data = res.result;
+        // self.markerService.generateMarker(self.deposits_data, self.map);
+        for (const deposit of self.deposits_data) {
+          const newMarker = L.marker([deposit.x_pos, deposit.y_pos]);
+          newMarker.bindPopup(self.makePopUp(deposit));
+          newMarker.addTo(self.map);
+        }
+        console.log(self.map);
       }
     });
+  }
+
+  makePopUp(data: any) {
+    return `` +
+      `<div>Manager Name: ${data.first_name} ${data.last_name}</div>` +
+      `<div>Schedule: ${data.schedule_start} - ${data.schedule_end}</div>`;
   }
 }
