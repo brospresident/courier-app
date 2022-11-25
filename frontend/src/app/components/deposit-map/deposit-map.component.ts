@@ -27,7 +27,7 @@ L.Marker.prototype.options.icon = iconDefault;
 })
 export class DepositMapComponent implements AfterViewInit, OnInit {
   @Input() user: any;
-  private map: L.Map | any;
+  map: L.Map | any;
   x_pos: any = 0;
   y_pos: any = 0;
   manager_email: any;
@@ -38,6 +38,7 @@ export class DepositMapComponent implements AfterViewInit, OnInit {
               private modalService: NgbModal,
               private rpcService: RpcService,
               private markerService: MarkerService) {
+
   }
 
   ngOnInit() {
@@ -65,10 +66,11 @@ export class DepositMapComponent implements AfterViewInit, OnInit {
       minZoom: 3,
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     });
+    
     tiles.addTo(this.map);
     this.getDepositData();
   }
-
+  
   open(content: any) {
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });		
   }
@@ -97,19 +99,15 @@ export class DepositMapComponent implements AfterViewInit, OnInit {
     let self = this;
     this.rpcService.ask('deposits.get_all_deposits', {query: 'get_all_deposits'}, (err: any, res: any) => {
       if (err || res?.error) {
-        console.log(res?.err);
-        console.log(err);
         self.deposits_data = [];
         return;
       } else {
         self.deposits_data = res.result;
-        // self.markerService.generateMarker(self.deposits_data, self.map);
         for (const deposit of self.deposits_data) {
-          const newMarker = L.marker([deposit.x_pos, deposit.y_pos]);
+          const newMarker = L.marker([deposit.y_pos, deposit.x_pos]);
           newMarker.bindPopup(self.makePopUp(deposit));
           newMarker.addTo(self.map);
         }
-        console.log(self.map);
       }
     });
   }
