@@ -72,6 +72,7 @@ export class DepositMapComponent implements AfterViewInit, OnInit {
   }
   
   open(content: any) {
+    if (this.user.role != 'admin') return;
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });		
   }
 

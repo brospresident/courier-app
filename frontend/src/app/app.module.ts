@@ -29,6 +29,7 @@ import { DepositMapComponent } from './components/deposit-map/deposit-map.compon
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 import { EmployeesListComponent } from './components/employees-list/employees-list.component';
 import { LoadingComponent } from './components/loading/loading.component';
+import { VehiclesComponent } from './components/vehicles/vehicles.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { LoadingComponent } from './components/loading/loading.component';
     DepositMapComponent,
     AdminDashboardComponent,
     EmployeesListComponent,
-    LoadingComponent
+    LoadingComponent,
+    VehiclesComponent
   ],
   imports: [
     NgbModule,

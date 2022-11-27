@@ -50,7 +50,7 @@ CREATE TABLE `PACKAGES` (
 	PRIMARY KEY (`id_package`)
 );
 
-CREATE TABLE `VEHICLES` (
+CREATE TABLE `vehicles` (
 	`id_vehicle` int NOT NULL AUTO_INCREMENT,
 	`model` varchar(50) NOT NULL,
 	`county` varchar(2) NOT NULL,

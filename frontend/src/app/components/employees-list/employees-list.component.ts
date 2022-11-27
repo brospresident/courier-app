@@ -80,6 +80,7 @@ export class EmployeesListComponent implements OnInit {
 
   private getDismissReason(reason: any): string {
 		if (reason === ModalDismissReasons.ESC) {
+      this.adding_employee = false;
 			return 'by pressing ESC';
 		} else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
 			return 'by clicking on a backdrop';
@@ -128,5 +129,6 @@ export class EmployeesListComponent implements OnInit {
         }, 3000);
       }
     });
+    this.adding_employee = false;
   }
 }
