@@ -18,6 +18,7 @@
                 <td style="color:white">{{vehicle.id_vehicle}}</td>
                 <td style="color:white">{{vehicle.model}}</td>
                 <td style="color:white">{{vehicle.number_plate}}</td>
+                <td style="color:white">{{vehicle.driver_email}}</td>
                 <td><button (click)="open(content, vehicleId)" class="btn btn-sm btn-primary">EDIT</button></td>
             </tr>
         </tbody>
@@ -41,14 +42,33 @@
                     />
                 </div>
 
-                <label for="numberPlate">Number Plate</label>
+                <label for="county">County</label>
                 <div class="input-group">
                     <input
-                        id="numberPlate"
+                        id="county"
                         class="form-control"
-                        [(ngModel)]="number_plate"
+                        [(ngModel)]="county"
                     />
                 </div>
+
+                <label for="number">Number</label>
+                <div class="input-group">
+                    <input
+                        id="number"
+                        class="form-control"
+                        [(ngModel)]="number"
+                    />
+                </div>
+
+                <label for="chars">Characters</label>
+                <div class="input-group">
+                    <input
+                        id="chars"
+                        class="form-control"
+                        [(ngModel)]="chars"
+                    />
+                </div>
+
                 <label for="driverEmail">Driver Email</label>
                 <div class="input-group">
                     <input

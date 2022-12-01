@@ -33,5 +33,13 @@ module.exports = {
 
     'insert_deposit': function(x_pos, y_pos, email, schedule_start, schedule_end) {
         return `INSERT INTO deposits (x_pos, y_pos, manager_id, schedule_start, schedule_end) VALUES('${x_pos}', '${y_pos}', (SELECT id_employee FROM employees WHERE email='${email}'),'${schedule_start}','${schedule_end}');`;
+    },
+
+    'get_all_vehicles': function() {
+        return 'SELECT employees.email, vehicles.model, vehicles.county, vehicles.number, vehicles.alpha_characters FROM vehicles INNER JOIN employees ON vehicles.driver_id = employees.id_employee;';
+    },
+
+    'insert_vehicle': function(email, model, county, number, chars) {
+        return `INSERT INTO vehicles (driver_id, model, county, number, alpha_characters) VALUES((SELECT id_employee FROM employees WHERE email='${email}'),'${model}','${county}', '${number}', '${chars}');`;
     }
 }

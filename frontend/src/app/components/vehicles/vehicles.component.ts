@@ -15,12 +15,16 @@ export class VehiclesComponent implements OnInit {
   model: any;
   number_plate: any;
   driver_email: any;
+  county: any;
+  number: any;
+  chars: any;
   adding_vehicle: any = false;
   callback_info = {err: null, success: null} as any;
   constructor(private rpcService: RpcService,
               private modalService: NgbModal) { }
 
   ngOnInit(): void {
+    this.adding_vehicle = false;
     this.loading = true;
     let self = this;
     this.rpcService.ask('vehicles.get_all_vehicles', {query: 'get_all_vehicles'}, (err: any, res: any) => {
@@ -33,13 +37,19 @@ export class VehiclesComponent implements OnInit {
 
   open(content: any, vehicleId: any) {
     this.model = '';
-    this.number_plate = '';
+    // this.number_plate = '';
+    this.county = '';
+    this.number = '';
+    this.chars = '';
     this.driver_email = '';
 
-    if (this.adding_vehicle) {
+    if (!vehicleId) {
+      this.adding_vehicle = true;
+    }
+
+    if (!this.adding_vehicle) {
       let veh = this.vehicles[vehicleId];
       this.model = veh.model;
-      this.number_plate = veh.number_plate;
     }
 		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
 			(result) => {
@@ -63,11 +73,15 @@ export class VehiclesComponent implements OnInit {
 
   saveVehicleData() {
     let params = {
-      
+      model: this.model,
+      county: this.county,
+      number: this.number,
+      chars: this.chars,
+      driver_email: this.driver_email  
     } as any;
-    let method = 'vehicles.add_vehicle';
+    let method = 'vehicles.save_vehicle';
     if (this.adding_vehicle) {
-      params.query = 'add_vehicle'
+      params.query = 'insert_vehicle'
     } else {
       params.query = 'update_vehicle';
       method = 'vehicles.update_vehicle';
