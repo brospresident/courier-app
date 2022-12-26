@@ -1,0 +1,32 @@
+<div class="container" *ngIf="view == 'add_package'">
+    <h2>Add package</h2>
+
+    <div class="row">
+        <div class="col-md-4">
+            <form>
+                <mat-form-field>
+                  <mat-label>Receiver Email</mat-label>
+                  <input type="email" matInput [formControl]="emailFormControl" placeholder="Ex. ionescu@gmail.com">
+                  <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
+                    Please enter a valid email address
+                  </mat-error>
+                  <mat-error *ngIf="emailFormControl.hasError('required')">
+                    Email is <strong>required</strong>
+                  </mat-error>
+                </mat-form-field>
+            </form>
+            <button style="margin-top: 10px;" (click)="findClient()" mat-flat-button color="primary">Search</button>
+        </div>
+    </div>
+    <div class="row">
+        <div *ngIf="package_data.error">
+            <p style="color: red">{{package_data.error}}</p>
+        </div>
+        <div *ngIf="package_data.receiver">
+            <p>You are about to send a package to <strong>{{package_data.receiver.first_name}} {{package_data.receiver.last_name}}</strong>.</p>
+            <p>Complete this form only when you are at one of our deposits with an employee.</p>
+            <p>When you are sure about the information you typed, hit 'Submit' and leave the package to our employees.</p>
+            <p>** The cost is calculated as weight(kilos) * $3.75.</p>
+        </div>
+    </div>
+</div>

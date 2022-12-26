@@ -53,6 +53,7 @@ export class EmployeesListComponent implements OnInit {
     this.wage = '';
     this.role = '';
     if (employeeId != null) {
+      this.adding_employee = false;
       let employee = this.employees[employeeId];
       this.first_name = employee.first_name;
       this.last_name = employee.last_name;

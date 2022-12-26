@@ -11,14 +11,15 @@
               <th scope="col">Model</th>
               <th scope="col">Number Plate</th>
               <th scope="col">Driver Email</th>
+              <th scope="col">Edit</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let vehicle of vehicles; let vehicleId=index;">
-                <td style="color:white">{{vehicle.id_vehicle}}</td>
+                <td style="color:white">{{vehicleId}}</td>
                 <td style="color:white">{{vehicle.model}}</td>
                 <td style="color:white">{{vehicle.number_plate}}</td>
-                <td style="color:white">{{vehicle.driver_email}}</td>
+                <td style="color:white">{{vehicle.email}}</td>
                 <td><button (click)="open(content, vehicleId)" class="btn btn-sm btn-primary">EDIT</button></td>
             </tr>
         </tbody>

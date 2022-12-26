@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -30,6 +30,7 @@ import { AdminDashboardComponent } from './components/admin-dashboard/admin-dash
 import { EmployeesListComponent } from './components/employees-list/employees-list.component';
 import { LoadingComponent } from './components/loading/loading.component';
 import { VehiclesComponent } from './components/vehicles/vehicles.component';
+import { PackagesComponent } from './components/packages/packages.component';
 
 @NgModule({
   declarations: [
@@ -43,13 +44,15 @@ import { VehiclesComponent } from './components/vehicles/vehicles.component';
     AdminDashboardComponent,
     EmployeesListComponent,
     LoadingComponent,
-    VehiclesComponent
+    VehiclesComponent,
+    PackagesComponent
   ],
   imports: [
     NgbModule,
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     BrowserAnimationsModule,
     MatInputModule,
     MatButtonModule,

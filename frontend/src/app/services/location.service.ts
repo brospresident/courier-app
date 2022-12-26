@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import {ActivatedRoute, ActivatedRouteSnapshot, Router, RoutesRecognized} from '@angular/router';
 
+
+// LEGACY -> should be removed in a new code refactor.
+// not used in new features since 26.12.2022
 @Injectable({
   providedIn: 'root'
 })

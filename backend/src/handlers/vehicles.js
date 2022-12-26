@@ -12,14 +12,13 @@ let vehicles = {
             }
 
             for (const veh of result) {
-                veh.number_plate = `${veh.county} ${veh.numbers} ${veh.alpha_characters}`;
+                veh.number_plate = `${veh.county} ${veh.number} ${veh.alpha_characters}`;
             }
             res.json({id: 1, error: null, result: result});
         }); 
     },
 
     save_vehicle(req, res, next) {
-        console.log(req.body.params);
         let query = req.body.params.query;
         let email = req.body.params.driver_email;
         let model = req.body.params.model;

@@ -43,12 +43,16 @@ export class VehiclesComponent implements OnInit {
     this.chars = '';
     this.driver_email = '';
 
+    console.log(vehicleId);
+
     if (!vehicleId) {
       this.adding_vehicle = true;
     }
 
-    if (!this.adding_vehicle) {
+    if (vehicleId != null) {
+      this.adding_vehicle = false;
       let veh = this.vehicles[vehicleId];
+      console.log(veh);
       this.model = veh.model;
     }
 		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(

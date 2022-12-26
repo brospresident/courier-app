@@ -62,7 +62,7 @@ CREATE TABLE `vehicles` (
 
 CREATE TABLE `STATUS` (
 	`id_status` int NOT NULL AUTO_INCREMENT,
-	`status` varchar(50) NOT NULL AUTO_INCREMENT,
+	`status` varchar(50) NOT NULL,
 	PRIMARY KEY (`id_status`)
 );
 

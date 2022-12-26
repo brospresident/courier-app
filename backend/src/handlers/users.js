@@ -13,6 +13,10 @@ let users = {
                 return;
             }
             result = result[0];
+            if (!result) {
+                res.json({id: 1, error: 'No client found', result: null});
+                return
+            }
             res.json({id: 1, error: null, result: result});
         });
     },
