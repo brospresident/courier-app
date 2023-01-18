@@ -7,12 +7,6 @@
     <hr>
     <mat-nav-list>
       <div *ngIf="user.role == 'client'">
-        <a mat-list-item (click)="changeView('add_package')">
-          <mat-icon>
-            <app-icons style="font-size: 15px;" icon="add-package"></app-icons>
-          </mat-icon>
-          <p style="margin-top: 20px; margin-left: 10px;">Add Package</p>
-        </a>
         <a mat-list-item (click)="changeView('package_list')">
           <mat-icon>
             <app-icons style="font-size: 15px;" icon="package-list"></app-icons>
@@ -51,6 +45,12 @@
           </mat-icon>
           <p style="margin-top: 20px; margin-left: 10px;">Packages</p>
         </a>
+        <a mat-list-item (click)="changeView('add_package')">
+          <mat-icon>
+            <app-icons style="font-size: 15px;" icon="add-package"></app-icons>
+          </mat-icon>
+          <p style="margin-top: 20px; margin-left: 10px;">Add Package</p>
+        </a>
       </div>
     </mat-nav-list>
   </mat-sidenav>
@@ -77,7 +77,7 @@
     <app-deposit-map *ngIf="view == 'locations'" [user]="user"></app-deposit-map>
     <app-employees-list *ngIf="view == 'employees' && user.role == 'admin'" [user]="user"></app-employees-list>
     <app-vehicles *ngIf="view == 'vehicles' && user.role == 'admin'" [user]="user"></app-vehicles>
-    <app-packages *ngIf="view == 'add_package' || view == 'package_list'"></app-packages>
+    <app-packages *ngIf="view == 'add_package' || view == 'packages'"></app-packages>
   </mat-sidenav-content>
 </mat-sidenav-container>
 

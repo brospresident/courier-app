@@ -5,28 +5,106 @@
         <div class="col-md-4">
             <form>
                 <mat-form-field>
-                  <mat-label>Receiver Email</mat-label>
-                  <input type="email" matInput [formControl]="emailFormControl" placeholder="Ex. ionescu@gmail.com">
-                  <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
-                    Please enter a valid email address
-                  </mat-error>
-                  <mat-error *ngIf="emailFormControl.hasError('required')">
-                    Email is <strong>required</strong>
-                  </mat-error>
+                    <mat-label>Sender Email</mat-label>
+                    <input type="email" matInput [formControl]="senderFormControl" placeholder="Ex. ionescu@gmail.com">
+                    <mat-error *ngIf="senderFormControl.hasError('email') && !senderFormControl.hasError('required')">
+                        Please enter a valid email address
+                    </mat-error>
+                    <mat-error *ngIf="senderFormControl.hasError('required')">
+                        Email is <strong>required</strong>
+                    </mat-error>
                 </mat-form-field>
             </form>
-            <button style="margin-top: 10px;" (click)="findClient()" mat-flat-button color="primary">Search</button>
         </div>
     </div>
     <div class="row">
-        <div *ngIf="package_data.error">
-            <p style="color: red">{{package_data.error}}</p>
+        <div class="col-md-4">
+            <form>
+                <mat-form-field>
+                    <mat-label>Receiver Email</mat-label>
+                    <input type="email" matInput [formControl]="receiverFormControl" placeholder="Ex. ionescu@gmail.com">
+                    <mat-error *ngIf="receiverFormControl.hasError('email') && !receiverFormControl.hasError('required')">
+                      Please enter a valid email address
+                    </mat-error>
+                    <mat-error *ngIf="receiverFormControl.hasError('required')">
+                      Email is <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </form>
         </div>
-        <div *ngIf="package_data.receiver">
-            <p>You are about to send a package to <strong>{{package_data.receiver.first_name}} {{package_data.receiver.last_name}}</strong>.</p>
-            <p>Complete this form only when you are at one of our deposits with an employee.</p>
-            <p>When you are sure about the information you typed, hit 'Submit' and leave the package to our employees.</p>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <form>
+                <mat-form-field>
+                    <mat-label>Package Weight</mat-label>
+                    <input type="email" matInput [formControl]="weightFormControl" placeholder="7">
+                </mat-form-field>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <ngb-datepicker #dp [(ngModel)]="date_picker" (navigate)="date = $event.next"></ngb-datepicker>
+        </div>
+    </div>
+    <div class="row">
+        <div *ngIf="receiverFormControl.value && senderFormControl.value">
+            <p>You are about to send a package from <strong>{{senderFormControl.value}}</strong> to <strong>{{receiverFormControl.value}}</strong>.</p>
+            <p>When you are sure about the information you typed, hit 'Add Package' and get the package from the client.</p>
             <p>** The cost is calculated as weight(kilos) * $3.75.</p>
+            <p>Total cost: ${{getTotalCost()}}</p>
         </div>
+    </div>
+    <button style="margin-top: 10px;" (click)="addPackage()" mat-flat-button color="primary">Add Package</button>
+    <p color="red" *ngIf="package_data.error">{{package_data.error}}</p>
+    <p color="green" *ngIf="package_data.result">{{package_data.result}}</p>
+</div>
+
+<div class="container" *ngIf="view == 'packages'">
+    <div *ngIf="loading">
+        <app-loading></app-loading>
+    </div>
+
+    <div *ngIf="!loading">
+        <div ngbDropdown>
+            <button class="btn btn-warning" id="gfg" 
+                    ngbDropdownToggle>Show</button>
+            <div ngbDropdownMenu="gfg">
+              <button (click)="changeOption(0)" ngbDropdownItem>All packages</button>
+              <button (click)="changeOption(1)" ngbDropdownItem>Packages picked by me</button>
+              <button (click)="changeOption(2)" ngbDropdownItem>Packages delivered by me</button>
+            </div>
+          </div>
+        <table class="table table-striped table-bordered table-hover table-sm" style="color: white; width: 50vw; margin-left: 20%; margin-top: 40px;">
+        <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Weight</th>
+              <th scope="col">Cost</th>
+              <th scope="col">Sender Name</th>
+              <th scope="col">Receiver Name</th>
+              <th scope="col">Driver Name</th>
+              <th scope="col">Date Added</th>
+              <th scope="col">Package Status/th>
+              <th scope="col">Date Delivered</th>
+              <th *ngIf="user.role == 'driver'" scope="col">Pick Package</th>
+              <th style="width: 1vw;" *ngIf="user.role == 'admin'" scope="col">Delete Package</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let package of packages; let packageId=index;">
+                <td style="color:white">{{packageId}}</td>
+                <td style="color:white">{{package.weight}}</td>
+                <td style="color:white">{{package.cost}}</td>
+                <td style="color:white">{{package.sender_name}}</td>
+                <td style="color:white">{{package.receiver_name}}</td>
+                <td style="color:white">{{package.driver_name}}</td>
+                <td style="color:white">{{package.date_added}}</td>
+                <td style="color:white">{{package.package_status}}</td>
+                <td style="color:white">{{package.date_delivered ?? 'Not delivered yet'}}</td>
+            </tr>
+        </tbody>
+    </table>
     </div>
 </div>
