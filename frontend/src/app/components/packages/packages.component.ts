@@ -98,7 +98,7 @@ export class PackagesComponent implements OnInit {
     if (this.query != 'get_all_packages_with_driver' || this.query != 'get_all_packages_without_driver') {
       return {
         query: this.query,
-        driver_email: this.accountService.getUser()['role']
+        driver_email: this.accountService.getUser()['email']
       }
     }
 
@@ -112,6 +112,7 @@ export class PackagesComponent implements OnInit {
 
     let self = this;
     let params = this.buildLoadParams();
+    console.log(params);
     this.rpcService.ask('packages.load_packages', params, (err: any, result: any) => {
       if (err) {
         console.log(err);
@@ -121,6 +122,9 @@ export class PackagesComponent implements OnInit {
       self.packages1 = result.result;
       for (const pack of self.packages1) {
         pack.date_added = pack.date_added.split('T')[0];
+        if (pack.date_delivered) {
+          pack.date_delivered = pack.date_delivered.split('T')[0];
+        }
       }
       console.log(self.packages1);
       self.loading = false;
@@ -138,6 +142,9 @@ export class PackagesComponent implements OnInit {
         self.packages2 = result.result;
         for (const pack of self.packages2) {
           pack.date_added = pack.date_added.split('T')[0];
+          if (pack.date_delivered) {
+            pack.date_delivered = pack.date_delivered.split('T')[0];
+          }
         }
         console.log(self.packages2);
       });
@@ -187,16 +194,47 @@ export class PackagesComponent implements OnInit {
         console.log(err);
         return;
       }
-      self.ngOnInit();
     });
   }
 
   deliverPackage(id: any) {
+    let self = this;
+    let date = new Date();
+    let date_delivered = new Date().toISOString().split('T')[0];
 
+    console.log(date_delivered);
+    let params = {
+      new_status: 2,
+      query: 'update_package_status',
+      package_id: id,
+      date_delivered: date_delivered
+    };
+
+    this.rpcService.ask('packages.update_package_status', params, (err: any, result: any) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      location.reload();
+    });
   }
 
   pickPackage(id: any) {
+    let self = this;
+    let params = {
+      new_status: 1,
+      query: 'update_package_status',
+      package_id: id,
+      driver_email: this.user.email
+    };
 
+    this.rpcService.ask('packages.update_package_status', params, (err: any, result: any) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      location.reload();
+    });
   }
 
 }

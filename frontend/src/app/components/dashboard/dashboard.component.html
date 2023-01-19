@@ -51,6 +51,12 @@
           </mat-icon>
           <p style="margin-top: 20px; margin-left: 10px;">Add Package</p>
         </a>
+        <a mat-list-item (click)="changeView('stats')">
+          <mat-icon>
+            <app-icons style="font-size: 15px;" icon="stats"></app-icons>
+          </mat-icon>
+          <p style="margin-top: 20px; margin-left: 10px;">Statistics</p>
+        </a>
       </div>
     </mat-nav-list>
   </mat-sidenav>
@@ -78,6 +84,7 @@
     <app-employees-list *ngIf="view == 'employees' && user.role == 'admin'" [user]="user"></app-employees-list>
     <app-vehicles *ngIf="view == 'vehicles' && user.role == 'admin'" [user]="user"></app-vehicles>
     <app-packages *ngIf="view == 'add_package' || view == 'packages'"></app-packages>
+    <app-statistics *ngIf="view == 'stats'"></app-statistics>
   </mat-sidenav-content>
 </mat-sidenav-container>
 

@@ -29,7 +29,8 @@ module.exports = {
 
     // join
     'get_all_deposits': function() {
-        return 'SELECT first_name, last_name, schedule_start, schedule_end, x_pos, y_pos FROM deposits INNER JOIN employees ON deposits.manager_id = employees.id_employee;';
+        return `SELECT first_name, last_name, schedule_start, schedule_end, x_pos, y_pos FROM deposits
+                 INNER JOIN employees ON deposits.manager_id = employees.id_employee;`;
     },
 
     'insert_deposit': function(x_pos, y_pos, email, schedule_start, schedule_end) {
@@ -38,21 +39,27 @@ module.exports = {
 
     // join
     'get_all_vehicles': function() {
-        return 'SELECT employees.email, vehicles.model, vehicles.county, vehicles.number, vehicles.alpha_characters FROM vehicles INNER JOIN employees ON vehicles.driver_id = employees.id_employee;';
+        return `SELECT employees.email, vehicles.model, vehicles.county, vehicles.number, vehicles.alpha_characters FROM vehicles 
+                       INNER JOIN employees ON vehicles.driver_id = employees.id_employee;`;
     },
 
     // complex
     'insert_vehicle': function(email, model, county, number, chars) {
-        return `INSERT INTO vehicles (driver_id, model, county, number, alpha_characters) VALUES((SELECT id_employee FROM employees WHERE email='${email}'),'${model}','${county}', '${number}', '${chars}');`;
+        return `INSERT INTO vehicles (driver_id, model, county, number, alpha_characters) 
+                VALUES((SELECT id_employee FROM employees WHERE email='${email}'),'${model}','${county}', '${number}', '${chars}');`;
     },
 
     'insert_package': function(weight, cost, sender_email, receiver_email, date_added) {
-        return `INSERT INTO packages (weight, cost, sender_id, receiver_id, driver_id, date_added) VALUES ('${weight}', '${cost}',(SELECT id_client FROM clients WHERE email='${sender_email}'), (SELECT id_client FROM clients WHERE email='${receiver_email}'), NULL, '${date_added}');`;
+        return `INSERT INTO packages (weight, cost, sender_id, receiver_id, driver_id, date_added) VALUES ('${weight}', '${cost}',
+                (SELECT id_client FROM clients WHERE email='${sender_email}'), 
+                (SELECT id_client FROM clients WHERE email='${receiver_email}'), NULL, '${date_added}');`;
     },
 
     // join
     'get_all_packages_with_driver': function() {
-        return `SELECT DISTINCT P.id_package, P.weight, P.cost, S.status, CONCAT(C1.first_name, ' ', C1.last_name) AS SenderName, CONCAT(C2.first_name, ' ', C2.last_name) AS ReceiverName, CONCAT(E.first_name, ' ', E.last_name) AS employeeName, P.date_added
+        return `SELECT DISTINCT P.id_package, P.weight, P.cost, S.status, CONCAT(C1.first_name, ' ', C1.last_name) AS SenderName, 
+        CONCAT(C2.first_name, ' ', C2.last_name) AS ReceiverName, 
+        CONCAT(E.first_name, ' ', E.last_name) AS employeeName, P.date_added, P.date_delivered
         FROM packages P, package_status PS, status S, clients C1, clients C2, employees E 
         WHERE P.driver_id = E.id_employee AND
               PS.status_id = S.id_status AND
@@ -62,7 +69,9 @@ module.exports = {
     },
 
     'get_all_packages_without_driver': function() {
-        return `SELECT DISTINCT P.id_package, P.weight, P.cost, S.status, CONCAT(C1.first_name, ' ', C1.last_name) AS SenderName, CONCAT(C2.first_name, ' ', C2.last_name) AS ReceiverName, P.date_added
+        return `SELECT DISTINCT P.id_package, P.weight, P.cost, S.status, 
+        CONCAT(C1.first_name, ' ', C1.last_name) AS SenderName, 
+        CONCAT(C2.first_name, ' ', C2.last_name) AS ReceiverName, P.date_added
         FROM packages P, package_status PS, status S, clients C1, clients C2, employees E 
         WHERE P.driver_id IS NULL AND
               PS.status_id = S.id_status AND
@@ -73,20 +82,42 @@ module.exports = {
 
     // join + complex
     'get_all_packages_picked_by_a_driver': function(driver_email) {
-        return `SELECT *
-        FROM packages P, package_status PS, status S
-        WHERE P.id_package = PS.package_id AND PS_status_id = '1' AND P.driver_id IN (
-            SELECT id_employee
-            FROM employees
-            WHERE email = '${driver_email}'
-        ); `
+        return `SELECT P.id_package, P.weight, P.cost, S.status, P.date_added, P.date_delivered, 
+        CONCAT(C1.first_name, ' ', C1.last_name) AS SenderName, CONCAT(C2.first_name, ' ', C2.last_name) AS ReceiverName
+        FROM packages P, package_status PS, status S, clients C1, clients C2
+        WHERE P.id_package = PS.package_id AND
+              PS.status_id = '1' AND
+              S.id_status = '1' AND
+              C1.id_client = P.sender_id AND 
+              C2.id_client = P.receiver_id AND
+              P.driver_id IN (
+                SELECT id_employee
+                FROM employees
+                WHERE email = '${driver_email}'
+              );`
     },
 
     // join + complex
     'get_all_packages_delivered_by_a_driver': function(driver_email) {
+        return `SELECT P.id_package, P.weight, P.cost, S.status, P.date_added, P.date_delivered, 
+        CONCAT(C1.first_name, ' ', C1.last_name) AS SenderName, CONCAT(C2.first_name, ' ', C2.last_name) AS ReceiverName
+        FROM packages P, package_status PS, status S, clients C1, clients C2
+        WHERE P.id_package = PS.package_id AND
+              PS.status_id = '2' AND
+              S.id_status = '2' AND
+              C1.id_client = P.sender_id AND 
+              C2.id_client = P.receiver_id AND
+              P.driver_id IN (
+                SELECT id_employee
+                FROM employees
+                WHERE email = '${driver_email}'
+              );`
+    },
+
+    'get_all_packages_delivered_by_a_driver_filter_id': function(driver_email) {
         return `SELECT *
         FROM packages P, package_status PS, status S
-        WHERE P.id_package = PS.package_id AND PS_status_id = '2' AND P.driver_id IN (
+        WHERE P.id_package = PS.package_id AND PS.status_id = '2' AND P.driver_id IN (
             SELECT id_employee
             FROM employees
             WHERE email = '${driver_email}'
@@ -111,5 +142,45 @@ module.exports = {
 
     'update_package_driver': function(package_id, driver_email) {
         return `UPDATE packages SET driver_id = (SELECT id_employee FROM employees WHERE email = '${driver_email}') WHERE id_package = '${package_id}';`
+    },
+
+    'update_package_date_delivered': function(package_id, date_delivered) {
+        return `UPDATE packages SET date_delivered = '${date_delivered}' WHERE id_package = '${package_id}';`
+    },
+
+    'get_client_number_of_sent_packages': function() {
+        return `SELECT  C.first_name, C.last_name, COUNT(*) AS number_of_sent_packages
+                FROM clients C, packages P
+                WHERE C.id_client = P.sender_id
+                GROUP BY C.first_name, C.last_name;`
+    },
+
+    // average delivery time for each courier
+    'get_average_delivery_time': function() {
+        return `SELECT CONCAT(E.first_name, ' ', E.last_name) AS employeeName, 
+                (SELECT AVG(DATEDIFF(P.date_delivered, P.date_added))
+                 FROM packages P
+                 WHERE P.driver_id = E.id_employee) AS average_delivery_time
+                FROM employees E;`;
+    },
+
+    // name and delivery count of every employee who delivered less than 5 packages
+    'get_stats_more_than_5_pack': function() {
+        return `SELECT CONCAT(E.first_name, ' ', E.last_name) AS employeeName
+                FROM employees E
+                WHERE E.id_employee NOT IN
+                (SELECT COUNT(*)
+                 FROM packages P
+                 WHERE P.driver_id = E.id_employee) > 5;`
+    },
+
+    // name of the couriers that delivered packages to more than one client and have a delivery rate higher than 70%
+    'get_stats_delivery_rate': function() {
+        return `SELECT CONCAT(E.first_name, ' ', E.last_name) AS employeeName, COUNT(DISTINCT P.receiver_id) AS deliveries, E.id_employee
+                FROM employees E, packages P, package_status PS
+                WHERE P.driver_id = E.id_employee AND PS.package_id = P.id_package AND PS.status_id = '2'
+                GROUP BY employeeName, E.id_employee
+                HAVING deliveries > 1 AND COUNT(*) / (SELECT COUNT(*) FROM packages WHERE driver_id = id_employee);`;
     }
+
 }

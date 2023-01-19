@@ -33,13 +33,13 @@ let packages = {
     load_packages: function(req, res, next) {
         let query = req.body.params.query;
         console.log(query);
-        let driver_email = req.body.params.query;
+        let driver_email = req.body.params.driver_email;
         let queryCall = queries[query]();
 
         if (driver_email) {
             queryCall = queries[query](driver_email);
         }
-
+        console.log(queryCall);
         mysql.query(queryCall, (err, result) => {
             if (err) {
                 console.log(err);
@@ -72,6 +72,44 @@ let packages = {
             });
         });
 
+    },
+
+    update_package_status: function(req, res, next) {
+        let new_status = req.body.params.new_status;
+        let query = req.body.params.query;
+        let package_id = req.body.params.package_id;
+        let driver_email = req.body.params.driver_email;
+        let date_delivered = req.body.params.date_delivered;
+        console.log(date_delivered);
+
+        mysql.query(queries[query](package_id, new_status), (err, result) => {
+            if (err) {
+                console.log(err);
+                res.json({id: 1, error: 'Problem updating package status', result: null});
+                return;
+            }
+
+            if (driver_email) {
+                mysql.query(queries['update_package_driver'](package_id, driver_email), (err, result) => {
+                    if (err) {
+                        console.log(err);
+                        res.json({id: 1, error: 'Problem adding driver', result: null});
+                        return;
+                    }
+                    res.json({id: 1, error: null, result: 'ok'});
+                    return;
+                });
+            } else if (date_delivered) {
+                mysql.query(queries['update_package_date_delivered'](package_id, date_delivered), (err, result) => {
+                    if (err) {
+                        console.log(err);
+                        res.json({id: 1, error: 'Problem updating date_delivered', result: null});
+                        return;
+                    }
+                    res.json({id: 1, error: null, result: 'ok'});
+                });
+            }
+        });
     }
 }
 

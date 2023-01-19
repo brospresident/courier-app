@@ -3,5 +3,6 @@ module.exports = {
     users: require('./users'),
     deposits: require('./deposits'),
     vehicles: require('./vehicles'),
-    packages: require('./packages')
+    packages: require('./packages'),
+    statistics: require('./statistics')
 }

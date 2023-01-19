@@ -31,6 +31,7 @@ import { EmployeesListComponent } from './components/employees-list/employees-li
 import { LoadingComponent } from './components/loading/loading.component';
 import { VehiclesComponent } from './components/vehicles/vehicles.component';
 import { PackagesComponent } from './components/packages/packages.component';
+import { StatisticsComponent } from './components/statistics/statistics.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { PackagesComponent } from './components/packages/packages.component';
     EmployeesListComponent,
     LoadingComponent,
     VehiclesComponent,
-    PackagesComponent
+    PackagesComponent,
+    StatisticsComponent
   ],
   imports: [
     NgbModule,

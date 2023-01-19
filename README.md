@@ -1,1 +1,1 @@
-Proiect pentru baze de date..
+SQL Databases course project made by Andrei Radu.
