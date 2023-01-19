@@ -51,10 +51,24 @@ module.exports = {
     },
 
     // join
-    'get_all_packages': function() {
-        return `SELECT DISTINCT P.weight, P.cost, CONCAT(C1.first_name, ' ', C1.last_name) AS SenderName, CONCAT(C2.first_name, ' ', C2.last_name) AS ReceiverName
+    'get_all_packages_with_driver': function() {
+        return `SELECT DISTINCT P.id_package, P.weight, P.cost, S.status, CONCAT(C1.first_name, ' ', C1.last_name) AS SenderName, CONCAT(C2.first_name, ' ', C2.last_name) AS ReceiverName, CONCAT(E.first_name, ' ', E.last_name) AS employeeName, P.date_added
         FROM packages P, package_status PS, status S, clients C1, clients C2, employees E 
-        WHERE PS.status_id = S.id_status AND P.id_package = PS.package_id AND C1.id_client = P.sender_id AND C2.id_client = P.receiver_id;`
+        WHERE P.driver_id = E.id_employee AND
+              PS.status_id = S.id_status AND
+              P.id_package = PS.package_id AND 
+              C1.id_client = P.sender_id AND 
+              C2.id_client = P.receiver_id ;`
+    },
+
+    'get_all_packages_without_driver': function() {
+        return `SELECT DISTINCT P.id_package, P.weight, P.cost, S.status, CONCAT(C1.first_name, ' ', C1.last_name) AS SenderName, CONCAT(C2.first_name, ' ', C2.last_name) AS ReceiverName, P.date_added
+        FROM packages P, package_status PS, status S, clients C1, clients C2, employees E 
+        WHERE P.driver_id IS NULL AND
+              PS.status_id = S.id_status AND
+              P.id_package = PS.package_id AND 
+              C1.id_client = P.sender_id AND 
+              C2.id_client = P.receiver_id;`
     },
 
     // join + complex
@@ -77,5 +91,25 @@ module.exports = {
             FROM employees
             WHERE email = '${driver_email}'
         ); `
+    },
+
+    'delete_package': function(package_id) {
+        return `DELETE FROM packages WHERE id_package = '${package_id}';`
+    },
+
+    'delete_package_status': function(package_id) {
+        return `DELETE FROM package_status WHERE package_id = '${package_id}';`
+    },
+
+    'insert_package_status': function(package_id) {
+        return `INSERT INTO package_status(package_id, status_id) VALUES(${package_id}, 4);`
+    },
+
+    'update_package_status': function(package_id, status_id) {
+        return `UPDATE package_status SET status_id = '${status_id}' WHERE package_id = '${package_id}';` 
+    },
+
+    'update_package_driver': function(package_id, driver_email) {
+        return `UPDATE packages SET driver_id = (SELECT id_employee FROM employees WHERE email = '${driver_email}') WHERE id_package = '${package_id}';`
     }
 }

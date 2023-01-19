@@ -17,10 +17,12 @@ export class PackagesComponent implements OnInit {
   package_data: any;
   date_picker: any;
   date: any;
-  packages: any;
+  packages1: any;
+  packages2: any;
   loading: any;
   user: any;
-  query: string = 'load_all_packages';
+  query: any = 'get_all_packages_without_driver';
+  package_view = 'default';
 
   constructor(private route: ActivatedRoute,
               private rpcService: RpcService,
@@ -33,6 +35,7 @@ export class PackagesComponent implements OnInit {
     });
 
     this.user = this.accountService.getUser();
+    console.log(this.user);
 
     this.senderFormControl = new FormControl('', [Validators.required, Validators.email]);
     this.receiverFormControl = new FormControl('', [Validators.required, Validators.email]);
@@ -40,7 +43,8 @@ export class PackagesComponent implements OnInit {
     this.package_data = {};
 
     if (this.view == 'packages') {
-      // this.loading = true;
+      this.loading = true;
+      this.loadPackages();
     } 
   }
 
@@ -90,21 +94,54 @@ export class PackagesComponent implements OnInit {
     });
   }
 
+  buildLoadParams() {
+    if (this.query != 'get_all_packages_with_driver' || this.query != 'get_all_packages_without_driver') {
+      return {
+        query: this.query,
+        driver_email: this.accountService.getUser()['role']
+      }
+    }
+
+    return {
+      query: this.query
+    }
+  }
+
   loadPackages() {
     if (this.view != 'packages') return;
 
     let self = this;
-    this.rpcService.ask('packages.load_packages', {
-      query: self.query
-    }, (err: any, result: any) => {
+    let params = this.buildLoadParams();
+    this.rpcService.ask('packages.load_packages', params, (err: any, result: any) => {
       if (err) {
         console.log(err);
         return;
       }
-
-      self.packages = result.result;
+      
+      self.packages1 = result.result;
+      for (const pack of self.packages1) {
+        pack.date_added = pack.date_added.split('T')[0];
+      }
+      console.log(self.packages1);
       self.loading = false;
     });
+
+    if (this.query == 'get_all_packages_without_driver') {
+      this.query = 'get_all_packages_with_driver';
+
+      this.rpcService.ask('packages.load_packages', {query: self.query}, (err: any, result: any) => {
+        if (err) {
+          console.log(err);
+          return;
+        }
+
+        self.packages2 = result.result;
+        for (const pack of self.packages2) {
+          pack.date_added = pack.date_added.split('T')[0];
+        }
+        console.log(self.packages2);
+      });
+    }
   }
 
   getTotalCost() {
@@ -126,7 +163,40 @@ export class PackagesComponent implements OnInit {
   }
 
   changeOption(id: any) {
-    
+    if (id == 0) {
+      this.query = 'get_all_packages_without_driver';
+      this.package_view = 'default';
+    }
+
+    if (id == 1) {
+      this.query = 'get_all_packages_picked_by_a_driver';
+      this.package_view = 'picked_by_me';
+    }
+
+    if (id == 2) {
+      this.query = 'get_all_packages_delivered_by_a_driver';
+      this.package_view = 'delivered_by_me';
+    }
+    return this.ngOnInit();
+  }
+
+  deletePackage(id: any) {
+    let self = this;
+    this.rpcService.ask('packages.delete_package', {query: 'delete_package', package_id: id}, (err: any, result: any) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      self.ngOnInit();
+    });
+  }
+
+  deliverPackage(id: any) {
+
+  }
+
+  pickPackage(id: any) {
+
   }
 
 }
