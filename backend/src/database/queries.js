@@ -164,14 +164,16 @@ module.exports = {
                 FROM employees E;`;
     },
 
-    // name and delivery count of every employee who delivered less than 5 packages
+    // name and delivery count of every employee who delivered more than 5 packages
     'get_stats_more_than_5_pack': function() {
-        return `SELECT CONCAT(E.first_name, ' ', E.last_name) AS employeeName
-                FROM employees E
-                WHERE E.id_employee NOT IN
-                (SELECT COUNT(*)
-                 FROM packages P
-                 WHERE P.driver_id = E.id_employee) > 5;`
+        return `SELECT CONCAT(E.first_name, ' ', E.last_name) AS employeeName, COUNT(P.id_package) as packagesCount
+                FROM employees E, packages P
+                WHERE P.driver_id = E.id_employee AND E.id_employee IN (
+                    SELECT P.driver_id FROM packages P
+                    GROUP BY P.driver_id
+                    HAVING COUNT(P.id_package) >= 5
+                )
+                GROUP BY E.id_employee;`
     },
 
     // name of the couriers that delivered packages to more than one client and have a delivery rate higher than 70%
