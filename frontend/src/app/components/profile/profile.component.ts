@@ -21,7 +21,7 @@ export class ProfileComponent implements OnInit {
       query: 'select_client'
     };
 
-    if (this.user.role == 'admin') {
+    if (this.user.role == 'admin' || this.user.role == 'driver') {
       params.query = 'select_employee';
     }
 

@@ -20,7 +20,7 @@
           <p style="margin-top: 20px; margin-left: 10px;">Deposits Map</p>
         </a>
       </div>
-      <div *ngIf="user.role == 'admin'">
+      <div *ngIf="user.role == 'admin' || user.role == 'driver'">
         <a mat-list-item (click)="changeView('employees')">
           <mat-icon>
             <app-icons style="font-size: 15px;" icon="employee"></app-icons>

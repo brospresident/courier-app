@@ -47,7 +47,7 @@
             <tr *ngFor="let piece of data['get_stats_more_than_5_pack']; let pieceId=index;">
                 <td style="color:white">{{pieceId}}</td>
                 <td style="color:white">{{piece.employeeName}}</td>
-                <td style="color:white">{{piece.deliveries ?? 0}}</td>
+                <td style="color:white">{{piece.packagesCount ?? 0}}</td>
             </tr>
         </tbody>
     </table>
